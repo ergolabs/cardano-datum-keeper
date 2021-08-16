@@ -1,6 +1,11 @@
 module Lib
     ( someFunc
     ) where
+      
+import Settings.AppSettings
 
 someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+someFunc = do
+  let reader = mkSettingsReader
+  cfg <- getCfg reader 
+  print cfg 
