@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Settings.AppSettings
   other-modules:
       Paths_cardano_explorer_backend
   hs-source-dirs:
