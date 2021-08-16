@@ -4,6 +4,9 @@ import Models.Api
 import Models.Common
 
 data BlockResolver = BlockResolver
-  { getBlockById :: Id -> Maybe ApiBlock,
-    getBlockByHash :: Hash -> Maybe ApiBlock
+  { getBlockById :: Id -> IO (Maybe ApiBlock),
+    getBlockByHash :: Hash -> IO (Maybe ApiBlock)
   }
+
+mkBlockResolver :: IO BlockResolver
+mkBlockResolver = undefined
