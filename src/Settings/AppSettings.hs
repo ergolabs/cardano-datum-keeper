@@ -8,7 +8,7 @@ import Dhall
 import GHC.Generics
 
 data AppSettings = AppSettings
-  { psqSettings :: PostgresSettings,
+  { psgSettings :: PostgresSettings,
     httpSettings :: HttpSettings
   }
   deriving (Generic, Show)
@@ -17,7 +17,7 @@ instance FromDhall AppSettings
 
 data PostgresSettings = PostgresSettings
   { getHost :: String,
-    getPort :: Int,
+    getPort :: Natural,
     getUser :: String,
     getPass :: String
   }
@@ -27,7 +27,7 @@ instance FromDhall PostgresSettings
 
 data HttpSettings = HttpSettings
   { getHost :: String,
-    getPort :: Int
+    getPort :: Natural
   }
   deriving (Generic, Show)
 
