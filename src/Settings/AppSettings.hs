@@ -39,5 +39,5 @@ data SettingsReader = SettingsReader
 
 mkSettingsReader :: SettingsReader
 mkSettingsReader = SettingsReader {
-	getCfg = input auto "./config.dhall"
+	getCfg = input auto "./configs/config.dhall"
 }

@@ -29,6 +29,19 @@ library
   exposed-modules:
       Lib
       Settings.AppSettings
+      Http.V1.BlockRoutes
+      Http.V1.Routes
+      Http.V1.TransactionRoutes
+      Http.V1.WalletRoutes
+      Models.Api
+      Models.Common
+      Repositories.BlockRepository
+      Repositories.TransactionRepository
+      Repositories.WalletRepository
+      Services.BlocksResolver
+      Services.TransactionResolver
+      Services.WalletResolver
+      Wirings.WiringApp
   other-modules:
       Paths_cardano_explorer_backend
   hs-source-dirs:
@@ -36,12 +49,15 @@ library
   build-depends:
       base >=4.7 && <5
     , aeson
+    , ghc-prim
     , postgresql-simple
     , dhall
     , dhall-json
     , rio
     , servant
     , servant-server
+    , transformers
+    , warp
   default-language: Haskell2010
 
 executable cardano-explorer-backend-exe

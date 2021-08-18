@@ -6,13 +6,13 @@ import Models.Api
 import Models.Common
 import Repositories.BlockRepository
 
-data BlockResolver = BlockResolver
+data BlocksResolver = BlocksResolver
   { getBlockById :: Id -> IO (Maybe ApiBlock),
     getBlockByHash :: Hash -> IO (Maybe ApiBlock)
   }
 
-mkBlockResolver :: BlockRepository -> BlockResolver
-mkBlockResolver repo = BlockResolver (getBlockById' repo) (getBlockByHash' repo)
+mkBlockResolver :: BlockRepository -> BlocksResolver
+mkBlockResolver repo = BlocksResolver (getBlockById' repo) (getBlockByHash' repo)
 
 getBlockById' :: BlockRepository -> Id -> IO (Maybe ApiBlock)
 getBlockById' BlockRepository{..} = getBlockById
