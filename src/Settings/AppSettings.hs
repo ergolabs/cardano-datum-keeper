@@ -17,7 +17,7 @@ instance FromDhall AppSettings
 
 data PostgresSettings = PostgresSettings
   { getHost :: String,
-    getPort :: Natural,
+    getDatabase :: String,
     getUser :: String,
     getPass :: String
   }
@@ -38,6 +38,7 @@ data SettingsReader = SettingsReader
   }
 
 mkSettingsReader :: SettingsReader
-mkSettingsReader = SettingsReader {
-	getCfg = input auto "./configs/config.dhall"
-}
+mkSettingsReader =
+  SettingsReader
+    { getCfg = input auto "./configs/config.dhall"
+    }

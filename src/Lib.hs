@@ -9,4 +9,4 @@ runApp :: IO ()
 runApp = do
   let reader = mkSettingsReader
   cfg <- getCfg reader 
-  initApp
+  initApp cfg
