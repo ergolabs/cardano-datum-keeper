@@ -6,6 +6,7 @@ module Settings.AppSettings where
 
 import Dhall
 import GHC.Generics
+import Data.Word (Word16)
 
 data AppSettings = AppSettings
   { psgSettings :: PostgresSettings,
@@ -17,6 +18,7 @@ instance FromDhall AppSettings
 
 data PostgresSettings = PostgresSettings
   { getHost :: String,
+    getPort :: Word16,
     getDatabase :: String,
     getUser :: String,
     getPass :: String

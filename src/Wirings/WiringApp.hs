@@ -22,6 +22,7 @@ mkConnection PostgresSettings {..} = do
   let connectInfo =
         ConnectInfo
           { connectHost = getHost,
+            connectPort = getPort,
             connectDatabase = getDatabase,
             connectUser = getUser,
             connectPassword = getPass

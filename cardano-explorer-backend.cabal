@@ -58,6 +58,7 @@ library
     , servant-server
     , transformers
     , warp
+    , bytestring
   default-language: Haskell2010
 
 executable cardano-explorer-backend-exe

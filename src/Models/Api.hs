@@ -1,11 +1,17 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE DeriveAnyClass #-}
 
 module Models.Api where
 
 import Data.Aeson
 import GHC.Generics
 import Models.Common
+import Database.PostgreSQL.Simple.FromRow (FromRow (..), field)
+import Database.PostgreSQL.Simple.FromField (FromField)
 
 -- drafts
 
@@ -13,7 +19,7 @@ data ApiBlock = ApiBlock
   { id :: Id,
     txQty :: Integer
   }
-  deriving (Generic, Show)
+  deriving (Generic, Show, FromRow, FromField)
 
 instance ToJSON ApiBlock
 

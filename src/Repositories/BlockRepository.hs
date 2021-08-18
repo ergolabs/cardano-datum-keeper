@@ -1,20 +1,30 @@
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE QuasiQuotes #-}
+
 module Repositories.BlockRepository where
 
+import Data.Maybe (Maybe (..))
+import Database.PostgreSQL.Simple
+import Database.PostgreSQL.Simple.FromRow
+import GHC.Base (($))
 import Models.Api
 import Models.Common
-import GHC.Base (($))
-import Database.PostgreSQL.Simple
 
 data BlockRepository = BlockRepository
   { getBlockById :: Id -> IO (Maybe ApiBlock),
     getBlockByHash :: Hash -> IO (Maybe ApiBlock)
   }
-  
+
 mkBlockRepository :: Connection -> BlockRepository
-mkBlockRepository conn = BlockRepository mockGetBlockById mockGetBlockByHash
+mkBlockRepository conn = BlockRepository (retrieveBlockById conn) (retrieveBlockByHash conn)
 
-mockGetBlockById :: Id -> IO (Maybe ApiBlock)
-mockGetBlockById id = pure $ Just $ ApiBlock id 10
+retrieveBlockById :: Connection -> Id -> IO (Maybe ApiBlock)
+retrieveBlockById conn (Id value) = do
+  [Only block] <- query conn "SELECT id, tx_count FROM block WHERE id = ?" $ (Only value)
+  return block
 
-mockGetBlockByHash :: Hash -> IO (Maybe ApiBlock)
-mockGetBlockByHash _ = pure $ Just $ ApiBlock (Id 1) 10
+retrieveBlockByHash :: Connection -> Hash -> IO (Maybe ApiBlock)
+retrieveBlockByHash conn (Hash hash) = do
+  [Only block] <- query conn "SELECT id, tx_count FROM block WHERE hash = ?" $ (Only hash)
+  return block
