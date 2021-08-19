@@ -1,6 +1,12 @@
 module Lib
-    ( someFunc
+    ( runApp
     ) where
+      
+import Settings.AppSettings
+import Wirings.WiringApp
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+runApp :: IO ()
+runApp = do
+  let reader = mkSettingsReader
+  cfg <- getCfg reader 
+  initApp cfg
