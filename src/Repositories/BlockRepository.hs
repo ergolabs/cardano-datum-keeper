@@ -1,6 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE QuasiQuotes #-}
 
 module Repositories.BlockRepository where
 
@@ -21,10 +19,14 @@ mkBlockRepository conn = BlockRepository (retrieveBlockById conn) (retrieveBlock
 
 retrieveBlockById :: Connection -> Id -> IO (Maybe ApiBlock)
 retrieveBlockById conn (Id value) = do
-  [Only block] <- query conn "SELECT id, tx_count FROM block WHERE id = ?" $ (Only value)
-  return block
+  results <- (query conn "SELECT id, tx_count FROM block WHERE id = ?" $ (Only value)) :: IO [(Int, Int)]
+  case results of 
+    [(id, txQty)] -> pure $ Just $ ApiBlock id txQty
+    _ -> pure Nothing
 
 retrieveBlockByHash :: Connection -> Hash -> IO (Maybe ApiBlock)
 retrieveBlockByHash conn (Hash hash) = do
-  [Only block] <- query conn "SELECT id, tx_count FROM block WHERE hash = ?" $ (Only hash)
-  return block
+  results <- query conn "SELECT id, tx_count FROM block WHERE hash = ?" $ (Only hash) :: IO [(Int, Int)]
+  case results of 
+    [(id, txQty)] -> pure $ Just $ ApiBlock id txQty
+    _ -> pure Nothing

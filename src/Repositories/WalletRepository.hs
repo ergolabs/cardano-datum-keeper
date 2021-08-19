@@ -13,4 +13,4 @@ mkWalletRepository :: Connection -> WalletRepository
 mkWalletRepository conn = WalletRepository mockGetWalletById
 
 mockGetWalletById :: Id -> IO (Maybe ApiWallet)
-mockGetWalletById id = pure $ Just $ ApiWallet id 10
+mockGetWalletById (Id value) = pure $ Just $ ApiWallet value 10

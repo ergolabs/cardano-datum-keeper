@@ -47,7 +47,7 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      base >=4.7 && <4.16
     , aeson
     , ghc-prim
     , postgresql-simple
@@ -55,7 +55,11 @@ library
     , dhall-json
     , rio
     , servant
+    , lens                         >=4.7.0.1  && <5.1
     , servant-server
+    , servant-swagger
+    , servant-swagger-ui
+    , swagger2
     , transformers
     , warp
     , bytestring

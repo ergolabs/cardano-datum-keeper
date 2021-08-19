@@ -7,12 +7,17 @@
 module Models.Common where
 
 import Data.Aeson
+import Data.Swagger
+import Database.PostgreSQL.Simple.FromField (FromField (..))
 import Database.PostgreSQL.Simple.FromRow (FromRow (..), field)
 import GHC.Generics
 import Servant (FromHttpApiData)
-import Database.PostgreSQL.Simple.FromField (FromField(..))
 
-newtype Id = Id Integer deriving (Generic, Show, FromHttpApiData, FromField)
+newtype Id = Id Int deriving (Generic, Show, FromHttpApiData, FromField)
+
+instance ToParamSchema Id
+
+instance ToSchema Id
 
 instance FromRow Id where
   fromRow = Id <$> field
