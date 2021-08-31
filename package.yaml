@@ -1,10 +1,10 @@
 name:                cardano-explorer-backend
 version:             0.1.0.0
-github:              "Github username here/cardano-explorer-backend"
+github:              "ergolabs/cardano-explorer-backend"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "Author email here"
-copyright:           "2019 Author name here"
+author:              "ergolabs"
+maintainer:          "ergolabs"
+copyright:           "2021 ergolabs"
 
 extra-source-files:
 - README.md

@@ -19,6 +19,13 @@
 # resolver: https://example.com/snapshots/2018-01-01.yaml
 resolver: lts-18.5
 
+nix:
+  # Nix off by default; use `stack --nix` instead.
+  # This is so that `nix-build` calling `stack` doesn't try to
+  # call nix-shell again when already inside nix.
+  enable: false
+  shell-file: default.nix
+
 # User packages to be built.
 # Various formats can be used as shown in the example below.
 #
@@ -30,6 +37,92 @@ resolver: lts-18.5
 #   - wai
 packages:
 - .
+
+extra-deps:
+  - git: https://github.com/ergolabs/cardano-dex.git
+    commit: e31f4670006da04139e8217793da61c37f2c4005
+  - git: https://github.com/input-output-hk/plutus.git
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+    subdirs:
+      - freer-extras
+      - playground-common
+      - plutus-core
+      - plutus-contract
+      - plutus-ledger
+      - plutus-ledger-api
+      - plutus-tx
+      - plutus-tx-plugin
+      - plutus-pab
+      - plutus-use-cases
+      - prettyprinter-configurable
+      - quickcheck-dynamic
+      - word-array
+  - git: https://github.com/Quid2/flat.git
+    commit: 95e5d7488451e43062ca84d5376b3adcc465f1cd
+  - git: https://github.com/shmish111/purescript-bridge.git
+    commit: 6a92d7853ea514be8b70bab5e72077bf5a510596
+  - git: https://github.com/shmish111/servant-purescript.git
+    commit: a76104490499aa72d40c2790d10e9383e0dbde63
+  - git: https://github.com/input-output-hk/cardano-crypto.git
+    commit: ce8f1934e4b6252084710975bd9bbc0a4648ece4
+  - git: https://github.com/input-output-hk/cardano-base
+    commit: 7d795c3040ea7785812efa1c97864bbb41b15d3e
+      - binary
+      - binary/test
+      - slotting
+      - cardano-crypto-class
+      - cardano-crypto-praos
+      - cardano-crypto-tests
+      - strict-containers
+  - git: https://github.com/input-output-hk/cardano-prelude
+    commit: fd773f7a58412131512b9f694ab95653ac430852
+      - cardano-prelude
+      - cardano-prelude-test
+  - git: https://github.com/input-output-hk/ouroboros-network
+    commit: e50613562d6d4a0f933741fcf590b0f69a1eda67
+      - typed-protocols
+      - typed-protocols-examples
+      - ouroboros-network
+      - ouroboros-network-testing
+      - ouroboros-network-framework
+      - ouroboros-consensus
+      - ouroboros-consensus-byron
+      - ouroboros-consensus-cardano
+      - ouroboros-consensus-shelley
+      - io-sim
+      - io-sim-classes
+      - network-mux
+  - git: https://github.com/input-output-hk/iohk-monitoring-framework
+    commit: 34abfb7f4f5610cabb45396e0496472446a0b2ca
+      - iohk-monitoring
+      - tracer-transformers
+      - contra-tracer
+      - plugins/backend-ekg
+  - git: https://github.com/input-output-hk/cardano-ledger-specs
+    commit: a3ef848542961079b7cd53d599e5385198a3035c
+      - byron/chain/executable-spec
+      - byron/crypto
+      - byron/crypto/test
+      - byron/ledger/executable-spec
+      - byron/ledger/impl
+      - byron/ledger/impl/test
+      - semantics/executable-spec
+      - semantics/small-steps-test
+      - shelley/chain-and-ledger/dependencies/non-integer
+      - shelley/chain-and-ledger/executable-spec
+      - shelley/chain-and-ledger/shelley-spec-ledger-test
+      - shelley-ma/impl
+      - cardano-ledger-core
+      - alonzo/impl
+  - git: https://github.com/input-output-hk/cardano-node.git
+    commit: b3cabae6b3bf30a0b1b4e78bc4b67282dabad0a6
+      - cardano-api
+  - git: https://github.com/input-output-hk/Win32-network
+    commit: 94153b676617f8f33abe8d8182c37377d2784bd1
+  - git: https://github.com/input-output-hk/hedgehog-extras
+    commit: 8bcd3c9dc22cc44f9fcfe161f4638a384fc7a187
+  - git: https://github.com/input-output-hk/goblins
+    commit: cde90a2b27f79187ca8310b6549331e59595e7ba
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:

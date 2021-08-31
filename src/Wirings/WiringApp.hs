@@ -29,13 +29,13 @@ mkConnection PostgresSettings {..} = do
           }
   connect connectInfo
 
-mkHttpApplication :: BlocksResolver -> TransactionResolver -> WalletResolver -> Application
-mkHttpApplication bR tR wR = serve apiProxy (mkApiServer bR tR wR)
+mkHttpApplication :: BlocksResolver -> TransactionResolver -> WalletResolver -> PoolResolver -> ProxyResolver -> Application
+mkHttpApplication bR tR wR poolR proxyR = serve apiProxy (mkApiServer bR tR wR poolR proxyR)
 
-initRepositories :: Connection -> IO (BlockRepository, TransactionRepository, WalletRepository)
+initRepositories :: Connection -> IO (BlockRepository, TransactionRepository, WalletRepository, PoolRepository, ProxyRepository)
 initRepositories conn = pure (mkBlockRepository conn, mkTransactionRepository conn, mkWalletRepository conn)
 
-initServices :: BlockRepository -> TransactionRepository -> WalletRepository -> IO (BlocksResolver, TransactionResolver, WalletResolver)
+initServices :: BlockRepository -> TransactionRepository -> WalletRepository -> PoolRepository -> ProxyRepository -> IO (BlocksResolver, TransactionResolver, WalletResolver, PoolResolver, ProxyResolver)
 initServices bRepo tRepo wRepo = pure (mkBlockResolver bRepo, mkTransactionResolver tRepo, mkWalletResolver wRepo)
 
 initApp :: AppSettings -> IO ()
