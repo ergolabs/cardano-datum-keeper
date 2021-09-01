@@ -13,14 +13,18 @@ import Data.Swagger
 import Http.V1.BlockRoutes
 import Http.V1.TransactionRoutes
 import Http.V1.WalletRoutes
+import Http.V1.ProxyRoutes
+import Http.V1.PoolRoutes
 import Servant
 import Servant.Swagger
 import Servant.Swagger.UI
 import Services.BlocksResolver
 import Services.TransactionResolver
 import Services.WalletResolver
+import Services.PoolResolver
+import Services.ProxyResolver
 
-type ApplicationApi = BlockAPI :<|> TransactionAPI :<|> WalletAPI
+type ApplicationApi = BlockAPI :<|> TransactionAPI :<|> WalletAPI :<|> PoolAPI :<|> ProxyAPI
 
 applicationApiProxy :: Proxy ApplicationApi
 applicationApiProxy = Proxy
@@ -40,5 +44,7 @@ todoSwagger =
 apiProxy :: Proxy API
 apiProxy = Proxy
 
-mkApiServer :: BlocksResolver -> TransactionResolver -> WalletResolver -> Server API
-mkApiServer blockR txR walletR = swaggerSchemaUIServer todoSwagger :<|> mkBlockApiServer blockR :<|> mkTransactionAPIServer txR :<|> mkWalletApiServer walletR
+mkApiServer :: BlocksResolver -> TransactionResolver -> WalletResolver -> PoolResolver -> ProxyResolver -> Server API
+mkApiServer blockR txR walletR poolR proxyR = swaggerSchemaUIServer todoSwagger :<|> mkBlockApiServer blockR :<|>
+  mkTransactionAPIServer txR :<|> mkWalletApiServer walletR :<|>
+  mkPoolApiServer poolR :<|> mkProxyApiServer proxyR

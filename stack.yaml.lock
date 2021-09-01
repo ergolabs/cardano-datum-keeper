@@ -3,7 +3,109 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    name: cardano-dex
+    version: 0.1.0.0
+    git: https://github.com/ergolabs/cardano-dex.git
+    pantry-tree:
+      size: 613
+      sha256: 7765d43ff3f7b85362b318a1d9b1925cdcf0107a2a6a4f33320e841bc63b8819
+    commit: e31f4670006da04139e8217793da61c37f2c4005
+  original:
+    git: https://github.com/ergolabs/cardano-dex.git
+    commit: e31f4670006da04139e8217793da61c37f2c4005
+- completed:
+    subdir: playground-common
+    name: playground-common
+    version: 0.1.0.0
+    git: https://github.com/input-output-hk/plutus.git
+    pantry-tree:
+      size: 1881
+      sha256: db4fc4bf7f79abf0fe3bc3ab212ec48a42cb5516ce02d35ee789e896f5f3c80a
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+  original:
+    subdir: playground-common
+    git: https://github.com/input-output-hk/plutus.git
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+- completed:
+    subdir: plutus-core
+    name: plutus-core
+    version: 0.1.0.0
+    git: https://github.com/input-output-hk/plutus.git
+    pantry-tree:
+      size: 86257
+      sha256: 36cfad2ad20bf804c5fa517324c7e0094fda1c7de36082f25b4f655bbeb3594d
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+  original:
+    subdir: plutus-core
+    git: https://github.com/input-output-hk/plutus.git
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+- completed:
+    subdir: plutus-contract
+    name: plutus-contract
+    version: 0.1.0.0
+    git: https://github.com/input-output-hk/plutus.git
+    pantry-tree:
+      size: 4964
+      sha256: 69f51c5e027efbad3c5c751daa70abf7eade989b61e7a27df930e4a8dfdec5df
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+  original:
+    subdir: plutus-contract
+    git: https://github.com/input-output-hk/plutus.git
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+- completed:
+    subdir: plutus-ledger
+    name: plutus-ledger
+    version: 0.1.0.0
+    git: https://github.com/input-output-hk/plutus.git
+    pantry-tree:
+      size: 1583
+      sha256: 6eb9b0a7e84598fbd09dff250c9355b7213435f3f875d8de49a24555b056be6f
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+  original:
+    subdir: plutus-ledger
+    git: https://github.com/input-output-hk/plutus.git
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+- completed:
+    subdir: plutus-ledger-api
+    name: plutus-ledger-api
+    version: 0.1.0.0
+    git: https://github.com/input-output-hk/plutus.git
+    pantry-tree:
+      size: 1689
+      sha256: d520aa36f7c12942e6f64a7ad9eae77d83f493a65d4682bc0142365a145e9f58
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+  original:
+    subdir: plutus-ledger-api
+    git: https://github.com/input-output-hk/plutus.git
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+- completed:
+    subdir: plutus-tx
+    name: plutus-tx
+    version: 0.1.0.0
+    git: https://github.com/input-output-hk/plutus.git
+    pantry-tree:
+      size: 2610
+      sha256: 332b16fbbedc97d54ee5453f6a2401c513d3686ccd5b2f55b883b89e0a4db602
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+  original:
+    subdir: plutus-tx
+    git: https://github.com/input-output-hk/plutus.git
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+- completed:
+    subdir: plutus-tx-plugin
+    name: plutus-tx-plugin
+    version: 0.1.0.0
+    git: https://github.com/input-output-hk/plutus.git
+    pantry-tree:
+      size: 14880
+      sha256: d193551dca74b66dfe9b3ed16f75fb8a9a4487b21b9ba30cb692627482b7c712
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
+  original:
+    subdir: plutus-tx-plugin
+    git: https://github.com/input-output-hk/plutus.git
+    commit: bd16cc29045ffc7eaa6beaabe3b985a56cb9292a
 snapshots:
 - completed:
     size: 585817
