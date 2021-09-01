@@ -37,9 +37,12 @@ library
       Http.V1.WalletRoutes
       Models.Api
       Models.Common
+      Helpers.MockValues
       Repositories.BlockRepository
       Repositories.TransactionRepository
       Repositories.WalletRepository
+      Repositories.ProxyRepository
+      Repositories.PoolRepository
       Services.BlocksResolver
       Services.ProxyResolver
       Services.PoolResolver

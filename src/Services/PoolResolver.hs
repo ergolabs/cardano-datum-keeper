@@ -1,11 +1,12 @@
 module Services.PoolResolver where
 
-import Dex.Models  
-  
+import Dex.Models
+import Repositories.PoolRepository
+
 data PoolResolver = PoolResolver { getPoolTxOuts :: IO [FullTxOut] }
 
-mkPoolResolver :: PoolResolver
-mkPoolResolver = PoolResolver getPoolTxOuts'
+mkPoolResolver :: PoolRepository -> PoolResolver
+mkPoolResolver _ = PoolResolver getPoolTxOuts'
 
 getPoolTxOuts' :: IO [FullTxOut]
 getPoolTxOuts' = pure []

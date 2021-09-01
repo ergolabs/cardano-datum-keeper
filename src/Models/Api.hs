@@ -5,16 +5,19 @@
 {-# LANGUAGE Strict #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Models.Api where
 
 import Dex.Models
-import Data.Aeson (ToJSON, FromJSON, toJSON)
+import Data.Aeson (ToJSON, FromJSON, toJSON, ToJSONKey)
 import Control.Lens
 import Plutus.V1.Ledger.Address    (Address (..))
 import qualified PlutusTx.AssocMap  as Map
-import Plutus.V1.Ledger.Value (Value(..), CurrencySymbol(..))
-import Plutus.V1.Ledger.Credential (StakingCredential(..))
+import Plutus.V1.Ledger.Value (Value(..), CurrencySymbol(..), TokenName(..))
+import Plutus.V1.Ledger.Scripts (ValidatorHash(..))
+import Plutus.V1.Ledger.Crypto  (PubKeyHash(..))
+import Plutus.V1.Ledger.Credential (StakingCredential(..), Credential(..))
 import qualified PlutusTx.Builtins  as Builtins
 import Ledger.Scripts            (Datum (..))
 import Plutus.V1.Ledger.TxId (TxId(..))
@@ -56,23 +59,7 @@ instance ToSchema FullTxOut where
       & mapped . schema . description ?~ "FullTxOut description"
       & mapped . schema . example ?~ toJSON mockFullTxOut
 
-instance ToSchema TxId where
-  declareNamedSchema proxy =
-    genericDeclareNamedSchema defaultSchemaOptions proxy
-      & mapped . schema . description ?~ "FullTxOut description"
-      & mapped . schema . example ?~ toJSON (TxId Builtins.emptyByteString)
-
-instance ToSchema Datum where
-  declareNamedSchema proxy =
-    genericDeclareNamedSchema defaultSchemaOptions proxy
-      & mapped . schema . description ?~ "Datum description"
-      & mapped . schema . example ?~ toJSON (Datum $ PlutusTx.toData mockErgoDexPool)
-
-instance ToSchema Value where
-  declareNamedSchema proxy =
-    genericDeclareNamedSchema defaultSchemaOptions proxy
-      & mapped . schema . description ?~ "Value description"
-      & mapped . schema . example ?~ toJSON (Value Map.empty)
+instance ToSchema Datum
 
 instance ToSchema Address where
   declareNamedSchema proxy =
@@ -81,34 +68,36 @@ instance ToSchema Address where
       & mapped . schema . example ?~ toJSON mockAddress
 
 instance ToSchema PlutusTx.Data where
-  declareNamedSchema proxy =
-    genericDeclareNamedSchema defaultSchemaOptions proxy
-      & mapped . schema . description ?~ "Data description"
-      & mapped . schema . example ?~ toJSON (PlutusTx.toData mockErgoDexPool)
+    declareNamedSchema _ = return $ NamedSchema (Just "plutus.data") byteSchema
 
 instance ToSchema GId where
   declareNamedSchema proxy =
     genericDeclareNamedSchema defaultSchemaOptions proxy
       & mapped . schema . description ?~ "GId description"
       & mapped . schema . example ?~ toJSON (GId 1)
- 
-instance ToSchema CurrencySymbol where
-  declareNamedSchema proxy =
-    genericDeclareNamedSchema defaultSchemaOptions proxy
-      & mapped . schema . description ?~ "CurrencySymbol description"
-      & mapped . schema . example ?~ toJSON mockCurrencySymbol
+
+instance ToSchema TxId where
+    declareNamedSchema _ = return $ NamedSchema (Just "txId") byteSchema
+
+instance ToSchema ValidatorHash where
+    declareNamedSchema _ = return $ NamedSchema (Just "ValidatorHash") byteSchema
+
+instance ToSchema PubKeyHash where
+    declareNamedSchema _ = return $ NamedSchema (Just "PubKeyHash") byteSchema
+
+instance ToSchema Credential
 
 instance ToSchema StakingCredential where
-  declareNamedSchema proxy =
-    genericDeclareNamedSchema defaultSchemaOptions proxy
-      & mapped . schema . description ?~ "StakingCredential description"
-      & mapped . schema . example ?~ toJSON (StakingPtr 1 1 1)
-      
-instance ToSchema Credential where
-  declareNamedSchema proxy =
-    genericDeclareNamedSchema defaultSchemaOptions proxy
-      & mapped . schema . description ?~ "StakingCredential description"
-      & mapped . schema . example ?~ toJSON (StakingPtr 1 1 1)
+  declareNamedSchema _ = return $ NamedSchema (Just "StakingCredential") $ mempty
+
+instance ToSchema Value where
+  declareNamedSchema _ = return $ NamedSchema (Just "Value") $ mempty
+
+instance ToSchema TokenName where
+  declareNamedSchema _ = return $ NamedSchema (Just "TokenName") byteSchema
+
+instance ToSchema CurrencySymbol where
+  declareNamedSchema _ = return $ NamedSchema (Just "CurrencySymbol") byteSchema
 
 data ApiTransaction = ApiTransaction
   { id :: Int,

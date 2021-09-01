@@ -1,4 +1,4 @@
-module Repositories.ProxyRepository (ProxyRepository(..)) where
+module Repositories.ProxyRepository (ProxyRepository(..), mkProxyRepository) where
   
 import Dex.Models
 import Database.PostgreSQL.Simple
