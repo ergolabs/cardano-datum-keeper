@@ -1,3 +1,5 @@
+{-# LANGUAGE RecordWildCards #-}
+
 module Services.PoolResolver where
 
 import Dex.Models
@@ -6,7 +8,7 @@ import Repositories.PoolRepository
 data PoolResolver = PoolResolver { getPoolTxOuts :: IO [FullTxOut] }
 
 mkPoolResolver :: PoolRepository -> PoolResolver
-mkPoolResolver _ = PoolResolver getPoolTxOuts'
+mkPoolResolver repo = PoolResolver (getPoolTxOuts' repo)
 
-getPoolTxOuts' :: IO [FullTxOut]
-getPoolTxOuts' = pure []
+getPoolTxOuts' :: PoolRepository -> IO [FullTxOut]
+getPoolTxOuts' PoolRepository{..} = getPoolTxOuts

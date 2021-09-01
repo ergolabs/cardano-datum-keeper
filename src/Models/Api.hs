@@ -14,7 +14,7 @@ import Data.Aeson (ToJSON, FromJSON, toJSON, ToJSONKey)
 import Control.Lens
 import Plutus.V1.Ledger.Address    (Address (..))
 import qualified PlutusTx.AssocMap  as Map
-import Plutus.V1.Ledger.Value (Value(..), CurrencySymbol(..), TokenName(..))
+import Plutus.V1.Ledger.Value
 import Plutus.V1.Ledger.Scripts (ValidatorHash(..))
 import Plutus.V1.Ledger.Crypto  (PubKeyHash(..))
 import Plutus.V1.Ledger.Credential (StakingCredential(..), Credential(..))

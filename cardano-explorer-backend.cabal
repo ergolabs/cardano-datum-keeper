@@ -70,6 +70,7 @@ library
     , transformers
     , warp
     , bytestring
+    , serialise
     , playground-common
     , plutus-contract
     , plutus-core
@@ -78,6 +79,8 @@ library
     , plutus-tx
     , plutus-tx-plugin
     , cardano-dex
+    , binary
+    , scientific
     , sdk
   default-language: Haskell2010
 
