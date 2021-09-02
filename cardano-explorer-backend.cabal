@@ -41,6 +41,7 @@ library
       Repositories.BlockRepository
       Repositories.TransactionRepository
       Repositories.WalletRepository
+      Repositories.DatumRepository
       Repositories.ProxyRepository
       Repositories.PoolRepository
       Services.BlocksResolver
