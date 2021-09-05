@@ -18,7 +18,9 @@ mkDatumRepository :: Connection -> DatumRepository
 mkDatumRepository conn = DatumRepository (putDatum' conn) (getDatum' conn)
 
 putDatum' :: Connection -> Datum -> IO ()
-putDatum' _ _ = undefined
+putDatum' con dat = undefined --do
+--  jsonDatum <- encode dat
+--  execute con "insert into datum (datum_json) values (?)" dat
 
 getDatum' :: Connection -> DatumHash -> IO (Maybe Datum)
-getDatum' _ _ = undefined
+getDatum' con dat = undefined
