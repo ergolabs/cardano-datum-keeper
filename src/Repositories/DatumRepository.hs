@@ -1,7 +1,14 @@
-module Repositories.DatumRepository where
+{-# LANGUAGE OverloadedStrings #-}
 
-import Plutus.V1.Ledger.Scripts  (Datum (..), DatumHash (..)) 
+module Repositories.DatumRepository (DatumRepository(..), mkDatumRepository) where
+
+import Plutus.V1.Ledger.Scripts  (Datum (..), DatumHash (..), datumHash)
 import Data.Maybe (Maybe (..))
+import Data.Aeson (decode)
+import qualified Data.ByteString               as B
+import qualified PlutusTx.Builtins             as Builtins
+import qualified Data.ByteString.Lazy          as BL
+import Data.Aeson (encode)
 import Database.PostgreSQL.Simple
 import Database.PostgreSQL.Simple.FromRow
 import Database.PostgreSQL.Simple.ToRow
@@ -18,9 +25,16 @@ mkDatumRepository :: Connection -> DatumRepository
 mkDatumRepository conn = DatumRepository (putDatum' conn) (getDatum' conn)
 
 putDatum' :: Connection -> Datum -> IO ()
-putDatum' con dat = undefined --do
---  jsonDatum <- encode dat
---  execute con "insert into datum (datum_json) values (?)" dat
+putDatum' con dat = do
+  let jsonDatum = B.concat . BL.toChunks $  encode dat
+  execute con "insert into datum (datum_hash, datum_json) values (?, ?)" $ (show $ datumHash dat, jsonDatum)
+  return ()
 
 getDatum' :: Connection -> DatumHash -> IO (Maybe Datum)
-getDatum' con dat = undefined
+getDatum' conn datHash = do
+  let datHashShow = show datHash
+  results <- query conn "SELECT datum_json FROM datum WHERE datum_hash = (?)" $ (Only datHashShow) :: IO [Only Builtins.ByteString]
+  case results of
+    [Only datJson] -> pure $ ((decode $ BL.fromStrict datJson) :: Maybe Datum)
+    _ -> pure Nothing
+

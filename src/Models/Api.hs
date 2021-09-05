@@ -15,7 +15,7 @@ import Control.Lens
 import Plutus.V1.Ledger.Address    (Address (..))
 import qualified PlutusTx.AssocMap  as Map
 import Plutus.V1.Ledger.Value
-import Plutus.V1.Ledger.Scripts (ValidatorHash(..))
+import Plutus.V1.Ledger.Scripts (ValidatorHash(..), DatumHash(..))
 import Plutus.V1.Ledger.Crypto  (PubKeyHash(..))
 import Plutus.V1.Ledger.Credential (StakingCredential(..), Credential(..))
 import qualified PlutusTx.Builtins  as Builtins
@@ -81,6 +81,9 @@ instance ToSchema TxId where
 
 instance ToSchema ValidatorHash where
     declareNamedSchema _ = return $ NamedSchema (Just "ValidatorHash") byteSchema
+
+instance ToSchema DatumHash where
+    declareNamedSchema _ = return $ NamedSchema (Just "DatumHash") byteSchema
 
 instance ToSchema PubKeyHash where
     declareNamedSchema _ = return $ NamedSchema (Just "PubKeyHash") byteSchema
