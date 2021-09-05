@@ -29,7 +29,7 @@ mkPoolRepository conn = PoolRepository (getPoolTxOuts' conn)
 
 getPoolTxOuts' :: Connection -> IO [FullTxOut]
 getPoolTxOuts' conn = do
-  rawOuts <- query_ conn "SELECT tx.hash, index, address_raw, value, data_hash FROM tx_out INNER JOIN tx ON tx_out.tx_id = tx.id WHERE data_hash is not NULL" :: IO [(Builtins.ByteString, Int, Builtins.ByteString, Scientific, Builtins.ByteString)]
+  rawOuts <- query_ conn "SELECT tx.hash, index, address_raw, value, data_hash FROM tx_out INNER JOIN tx ON tx_out.tx_id = tx.id WHERE data_hash is not NULL" :: IO [(Builtins.ByteString, Integer, Builtins.ByteString, Scientific, Builtins.ByteString)]
   forM rawOuts $ \out -> do
     let (txId, index, addrRaw, value, dataHash) = out
     return FullTxOut {

@@ -16,14 +16,15 @@ import Servant.API
 import Servant.Server
 import Services.BlocksResolver
 import Prelude (return)
+import GHC.Base
 
-type BlockAPI = "block" :> Capture "blockId" Id :> Get '[JSON] ApiBlock
+type BlockAPI = "block" :> (Capture "blockId" Id :> Get '[JSON] ApiBlock :<|> "getBestHeight" :> Get '[JSON] Int)
 
 blockAPI :: Proxy BlockAPI
 blockAPI = Proxy
 
 mkBlockApiServer :: BlocksResolver -> Server BlockAPI
-mkBlockApiServer BlocksResolver {..} = resolveBlock
+mkBlockApiServer BlocksResolver {..} = resolveBlock :<|> resolveBestHeight
   where
     resolveBlock :: Id -> Handler ApiBlock
     resolveBlock id = do
@@ -31,3 +32,6 @@ mkBlockApiServer BlocksResolver {..} = resolveBlock
       case maybeBlock of
         Just block -> return block
         Nothing -> Handler (throwE $ err401 {errBody = "Could not find block with that ID"})
+
+    resolveBestHeight :: Handler Int
+    resolveBestHeight = liftIO getBestBlockId

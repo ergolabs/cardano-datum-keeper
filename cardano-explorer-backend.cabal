@@ -32,6 +32,7 @@ library
       Http.V1.BlockRoutes
       Http.V1.Routes
       Http.V1.TransactionRoutes
+      Http.V1.DatumRoutes
       Http.V1.ProxyRoutes
       Http.V1.PoolRoutes
       Http.V1.WalletRoutes
@@ -41,11 +42,13 @@ library
       Repositories.BlockRepository
       Repositories.TransactionRepository
       Repositories.WalletRepository
+      Repositories.DatumRepository
       Repositories.ProxyRepository
       Repositories.PoolRepository
       Services.BlocksResolver
       Services.ProxyResolver
       Services.PoolResolver
+      Services.DatumService
       Services.TransactionResolver
       Services.WalletResolver
       Wirings.WiringApp
