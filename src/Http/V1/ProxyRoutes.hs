@@ -13,7 +13,7 @@ import Prelude (return)
 import Servant
 import Servant.API
 
-type ProxyAPI = "proxyContracts" :> Get '[JSON] [FullTxOut]
+type ProxyAPI = "proxy" :> Get '[JSON] [FullTxOut]
 
 proxyApi :: Proxy ProxyAPI
 proxyApi = Proxy

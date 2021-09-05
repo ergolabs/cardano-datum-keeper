@@ -16,7 +16,7 @@ import Servant
 import Services.DatumService
 import Servant.API
 
-type DatumAPI = "datumRoutes" :> ( "put" :> ReqBody '[JSON] Datum :> Post '[JSON] () :<|> "get" :> ReqBody '[JSON] DatumHash :> Post '[JSON] Datum)
+type DatumAPI = "datums" :> ( "put" :> ReqBody '[JSON] Datum :> Post '[JSON] () :<|> "get" :> ReqBody '[JSON] DatumHash :> Post '[JSON] Datum)
 
 datumApi :: Proxy DatumAPI
 datumApi = Proxy

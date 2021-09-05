@@ -118,6 +118,14 @@ instance ToSchema ApiTransaction where
       & mapped . schema . description ?~ "Transaction description"
       & mapped . schema . example ?~ toJSON (ApiTransaction 1 1)
 
+newtype AssetName = AssetName String deriving (FromJSON, ToJSON)
+
+data AssetInfo = AssetInfo {
+	name: AssetName,
+	policy: Builtins.ByteString,
+	qty: Int
+} deriving (Generic, Show, FromJSON, ToJSON)
+
 data ApiWallet = ApiWallet
   { id :: Int,
     testInfo :: Int

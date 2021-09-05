@@ -11,7 +11,7 @@ import Dex.Models
 import Servant
 import Servant.API
   
-type PoolAPI = "poolRoutes" :> Get '[JSON] [FullTxOut]
+type PoolAPI = "pools" :> Get '[JSON] [FullTxOut]
 
 poolApi :: Proxy PoolAPI
 poolApi = Proxy

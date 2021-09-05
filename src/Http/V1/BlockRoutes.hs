@@ -18,7 +18,7 @@ import Services.BlocksResolver
 import Prelude (return)
 import GHC.Base
 
-type BlockAPI = "block" :> (Capture "blockId" Id :> Get '[JSON] ApiBlock :<|> "getBestHeight" :> Get '[JSON] Int)
+type BlockAPI = "blocks" :> (Capture "blockId" Id :> Get '[JSON] ApiBlock :<|> "getBestHeight" :> Get '[JSON] Int)
 
 blockAPI :: Proxy BlockAPI
 blockAPI = Proxy
