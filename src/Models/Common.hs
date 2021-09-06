@@ -15,6 +15,8 @@ import Servant (FromHttpApiData)
 
 newtype Id = Id Int deriving (Generic, Show, FromHttpApiData, FromField)
 
+newtype Address = Address String
+
 instance ToParamSchema Id
 
 instance ToSchema Id
