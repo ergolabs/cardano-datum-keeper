@@ -16,20 +16,13 @@ import Servant
 import Services.DatumService
 import Servant.API
 
-type DatumAPI = "datumRoutes" :> ( "put" :> ReqBody '[JSON] Datum :> Post '[JSON] () :<|> "get" :> ReqBody '[JSON] DatumHash :> Post '[JSON] Datum)
+type DatumAPI = "datumRoutes" :> ( "put" :> ReqBody '[JSON] Datum :> Post '[JSON] ())
 
 datumApi :: Proxy DatumAPI
 datumApi = Proxy
 
 mkDatumApiServer :: DatumService -> Server DatumAPI
-mkDatumApiServer DatumService{..} = put :<|> findDatum
+mkDatumApiServer DatumService{..} = put
   where
-    findDatum :: DatumHash -> Handler Datum
-    findDatum datHash = do
-      posDatum <- liftIO $ getDatum datHash
-      case posDatum of
-        Just datum -> return datum
-        Nothing -> Handler (throwE $ err401 {errBody = "Could not find datum with that hash"})
-
     put :: Datum -> Handler ()
     put dat = liftIO $ putDatum dat
