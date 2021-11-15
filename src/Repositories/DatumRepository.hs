@@ -18,23 +18,14 @@ import Models.Common
   
 data DatumRepository = DatumRepository { 
     putDatum :: Datum -> IO (), 
-    getDatum :: DatumHash -> IO (Maybe Datum)
   }
   
 mkDatumRepository :: Connection -> DatumRepository
-mkDatumRepository conn = DatumRepository (putDatum' conn) (getDatum' conn)
+mkDatumRepository conn = DatumRepository (putDatum' conn)
 
 putDatum' :: Connection -> Datum -> IO ()
 putDatum' con dat = do
-  let jsonDatum = B.concat . BL.toChunks $  encode dat
+  let jsonDatum = B.concat . BL.toChunks $ encode dat
   execute con "insert into datum (datum_hash, datum_json) values (?, ?)" $ (show $ datumHash dat, jsonDatum)
   return ()
-
-getDatum' :: Connection -> DatumHash -> IO (Maybe Datum)
-getDatum' conn datHash = do
-  let datHashShow = show datHash
-  results <- query conn "SELECT datum_json FROM datum WHERE datum_hash = (?)" $ (Only datHashShow) :: IO [Only Builtins.ByteString]
-  case results of
-    [Only datJson] -> pure $ ((decode $ BL.fromStrict datJson) :: Maybe Datum)
-    _ -> pure Nothing
 
