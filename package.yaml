@@ -1,6 +1,6 @@
 name:                cardano-explorer-backend
 version:             0.1.0.0
-github:              "ergolabs/cardano-explorer-backend"
+github:              "ergolabs/cardano-datum-keeper"
 license:             BSD3
 author:              "ergolabs"
 maintainer:          "ergolabs"
@@ -26,7 +26,7 @@ library:
   source-dirs: src
 
 executables:
-  cardano-explorer-backend-exe:
+  cardano-datum-keeper-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -34,15 +34,4 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - cardano-explorer-backend
-
-tests:
-  cardano-explorer-backend-test:
-    main:                Spec.hs
-    source-dirs:         test
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - cardano-explorer-backend
+    - library
