@@ -5,30 +5,30 @@ module Repositories.DatumRepository
   , mkDatumRepository
   ) where
 
-import           Plutus.V1.Ledger.Scripts            (Datum (..), DatumHash (..), datumHash)
+import           Data.Functor
 import           Data.Maybe                          (Maybe (..))
 import           Data.Aeson                          (decode)
 import qualified Data.ByteString                     as B
 import qualified PlutusTx.Builtins                   as Builtins
 import qualified Data.ByteString.Lazy                as BL
-import           Data.Aeson                          (encode)
 import           Database.PostgreSQL.Simple
 import           Database.PostgreSQL.Simple.FromRow
 import           Database.PostgreSQL.Simple.ToRow
 import           GHC.Base                            (($))
 import           Models.Api
+import           Models.Db
 import           Control.Monad.IO.Class
   
 data DatumRepository f = DatumRepository
-  { putDatum :: Datum -> f ()
+  { putDatum :: DbDatum -> f ()
   }
   
 mkDatumRepository :: (MonadIO f) => Connection -> DatumRepository f
 mkDatumRepository conn = DatumRepository (putDatum' conn)
 
-putDatum' :: (MonadIO f) => Connection -> Datum -> f ()
-putDatum' con dat = do
-  let jsonDatum = B.concat . BL.toChunks $ encode dat
-  liftIO $ execute con "insert into datum (datum_hash, datum_json) values (?, ?)" $ (show $ datumHash dat, jsonDatum)
-  return ()
+putDatum' :: (MonadIO f) => Connection -> DbDatum -> f ()
+putDatum' con DbDatum{..} =
+  void $ liftIO
+    $ execute con "insert into datum (datum_hash, datum_json, datum_bytes) values (?, ?)"
+    $ (show $ dbDatumHash, dbDatumJson, dbDatumBytes)
 

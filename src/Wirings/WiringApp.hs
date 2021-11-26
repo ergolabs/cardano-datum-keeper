@@ -4,14 +4,8 @@ module Wirings.WiringApp where
 
 import Database.PostgreSQL.Simple
 import Http.Server
-import Network.Wai.Handler.Warp  (run)
-import Data.Aeson                (encode)
-import Plutus.V1.Ledger.Scripts  (Datum (..))
-import Control.Monad.IO.Class    (MonadIO, liftIO)
 import Control.Monad.IO.Unlift
 import Repositories.DatumRepository
-import Servant.API
-import Servant.Server
 import Services.DatumService
 import Settings.AppSettings
 
