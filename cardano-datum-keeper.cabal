@@ -73,6 +73,7 @@ library
       Http.V1.SwaggerRoutes
       Http.Server
       Models.Api
+      Models.Db
       Repositories.DatumRepository
       Services.DatumService
       Settings.AppSettings
