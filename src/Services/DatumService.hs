@@ -1,16 +1,20 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module Services.DatumService (DatumService(..), mkDatumService) where
+module Services.DatumService
+  ( DatumService(..)
+  , mkDatumService
+  ) where
 
-import Plutus.V1.Ledger.Scripts  (Datum (..), DatumHash (..))
-import Repositories.DatumRepository
+import           Ledger.Scripts               (Datum (..), DatumHash (..))
+import           Repositories.DatumRepository
+import qualified Models.Db                    as DBDatum
 
-data DatumService = DatumService {
-    putDatum :: Datum -> IO (),
+data DatumService f = DatumService
+  { putDatum :: Datum -> f ()
   }
 
-mkDatumService :: DatumRepository -> DatumService
-mkDatumService repo = DatumService (putDatum' repo) (getDatum' repo)
+mkDatumService :: DatumRepository f -> DatumService f
+mkDatumService repo = DatumService (putDatum' repo)
 
-putDatum' :: DatumRepository -> Datum -> IO ()
-putDatum' DatumRepository {..} = putDatum
+putDatum' :: DatumRepository f -> Datum -> f ()
+putDatum' DatumRepository {..} = putDatum . DBDatum.fromDatum

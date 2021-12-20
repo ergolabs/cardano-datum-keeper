@@ -4,6 +4,7 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE RecordWildCards #-}
 
 module Http.V1.Routes where
 
@@ -14,27 +15,12 @@ import Http.V1.DatumRoutes
 import Servant
 import Servant.Swagger
 import Servant.Swagger.UI
-import Services.DatumService
-
-type ApplicationApi = DatumAPI
-
-applicationApiProxy :: Proxy ApplicationApi
-applicationApiProxy = Proxy
-
-type SwaggerAPI = SwaggerSchemaUI "swagger-ui" "swagger.json"
+import Settings.AppSettings
+import Control.Monad.IO.Class    (MonadIO, liftIO)
+import Network.Wai.Handler.Warp  as Warp
+import Http.V1.SwaggerRoutes
 
 type API = SwaggerAPI :<|> ApplicationApi
 
-todoSwagger :: Swagger
-todoSwagger =
-  toSwagger applicationApiProxy
-    & info . title .~ "Ergo labs. Cardano explorer API"
-    & info . version .~ "1.0"
-    & info . description ?~ "Description"
-    & info . license ?~ ("MIT" & url ?~ URL "http://mit.com")
-
-apiProxy :: Proxy API
-apiProxy = Proxy
-
-mkApiServer :: DatumService -> Server API
-mkApiServer datumS = swaggerSchemaUIServer todoSwagger :<|> mkDatumApiServer datumS
+apiV1Proxy :: Proxy API
+apiV1Proxy = Proxy

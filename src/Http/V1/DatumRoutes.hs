@@ -5,12 +5,11 @@
 
 module Http.V1.DatumRoutes where
   
-import Plutus.V1.Ledger.Scripts  (Datum (..), DatumHash(..))
-import Control.Monad.Trans.Except (throwE)
-import Data.Maybe (Maybe (..))
-import Control.Monad.IO.Class   (MonadIO, liftIO)
-import Prelude (return, undefined)
-import GHC.Base (($))
+import Plutus.V1.Ledger.Scripts    (Datum (..), DatumHash(..))
+import Control.Monad.Trans.Except  (throwE)
+import Data.Maybe                  (Maybe (..))
+import Prelude                     (return, undefined)
+import GHC.Base                    (($))
 
 import Servant
 import Services.DatumService
@@ -21,8 +20,5 @@ type DatumAPI = "datumRoutes" :> ( "put" :> ReqBody '[JSON] Datum :> Post '[JSON
 datumApi :: Proxy DatumAPI
 datumApi = Proxy
 
-mkDatumApiServer :: DatumService -> Server DatumAPI
-mkDatumApiServer DatumService{..} = put
-  where
-    put :: Datum -> Handler ()
-    put dat = liftIO $ putDatum dat
+mkDatumApiServer :: DatumService f -> ServerT DatumAPI f
+mkDatumApiServer DatumService{..} = putDatum

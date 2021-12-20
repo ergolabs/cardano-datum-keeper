@@ -6,7 +6,8 @@ module Settings.AppSettings where
 
 import Dhall
 import GHC.Generics
-import Data.Word (Word16)
+import Data.Word                (Word16)
+import Control.Monad.IO.Class   (MonadIO, liftIO)
 
 data AppSettings = AppSettings
   { psgSettings :: PostgresSettings,
@@ -35,12 +36,9 @@ data HttpSettings = HttpSettings
 
 instance FromDhall HttpSettings
 
-data SettingsReader = SettingsReader
-  { getCfg :: IO AppSettings
+data SettingsReader f = SettingsReader
+  { getCfg :: f AppSettings
   }
 
-mkSettingsReader :: SettingsReader
-mkSettingsReader =
-  SettingsReader
-    { getCfg = input auto "./configs/config.dhall"
-    }
+mkSettingsReader :: (MonadIO f) => SettingsReader f
+mkSettingsReader = SettingsReader $ liftIO $ input auto "./configs/config.dhall"
