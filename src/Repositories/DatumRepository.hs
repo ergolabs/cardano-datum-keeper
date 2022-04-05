@@ -5,30 +5,27 @@ module Repositories.DatumRepository
   , mkDatumRepository
   ) where
 
+import RIO (throwIO)
+
 import           Data.Functor
-import           Data.Maybe                          (Maybe (..))
-import           Data.Aeson                          (decode)
-import qualified Data.ByteString                     as B
-import qualified PlutusTx.Builtins                   as Builtins
-import qualified Data.ByteString.Lazy                as BL
 import           Database.PostgreSQL.Simple
-import           Database.PostgreSQL.Simple.FromRow
-import           Database.PostgreSQL.Simple.ToRow
-import           GHC.Base                            (($))
-import           Models.Api
 import           Models.Db
 import           Control.Monad.IO.Class
-  
+import Database.PostgreSQL.Simple.Errors
+
 data DatumRepository f = DatumRepository
   { putDatum :: DbDatum -> f ()
   }
-  
+
 mkDatumRepository :: (MonadIO f) => Connection -> DatumRepository f
 mkDatumRepository conn = DatumRepository (putDatum' conn)
 
 putDatum' :: (MonadIO f) => Connection -> DbDatum -> f ()
 putDatum' con DbDatum{..} =
-  void $ liftIO
-    $ execute con "insert into datum (datum_hash, datum_json, datum_bytes) values (?, ?)"
-    $ (show $ dbDatumHash, dbDatumJson, dbDatumBytes)
-
+    liftIO
+      $ catchViolation catcher
+      $ void
+      $ execute con "insert into reported_datum (hash, value, raw_value) values (?, ?, ?)" (dbDatumHash, dbDatumJson, dbDatumBytes)
+  where
+    catcher _ (UniqueViolation _) = pure ()
+    catcher e _                   = throwIO e
