@@ -23,8 +23,8 @@ data DbDatum = DbDatum
   , dbDatumBytes :: Text
   }
 
-fromDatum :: Datum -> DbDatum
-fromDatum d =
+datumToPersistence :: Datum -> DbDatum
+datumToPersistence d =
   let DatumHash dh = datumHash d
   in DbDatum
     { dbDatumHash  = T.decodeUtf8 . Hex.encode . B.pack . BA.unpack $ dh

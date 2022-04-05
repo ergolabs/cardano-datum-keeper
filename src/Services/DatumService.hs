@@ -5,12 +5,13 @@ module Services.DatumService
   , mkDatumService
   ) where
 
+import RIO ((<&>))
 import Control.Monad.Except
 
-import Repositories.DatumRepository ( DatumRepository(..) )
-import qualified Models.Db                    as DBDatum
-import Models.Api ( SerializedDatum, deserialiseDatum )
-import RIO ((<&>))
+import           Repositories.DatumRepository ( DatumRepository(..) )
+import qualified Models.Db                    as DB
+import           Models.Api                   ( SerializedDatum, deserialiseDatum )
+
 import Servant.Server (ServerError(..), err400)
 
 data DatumService f = DatumService
@@ -25,4 +26,4 @@ putDatum' DatumRepository {..} d =
   maybe
     (throwError err400 { errBody = "Cannot decode provided datum." }) 
     (lift . putDatum)
-    (deserialiseDatum d <&> DBDatum.fromDatum)
+    (deserialiseDatum d <&> DB.datumToPersistence)
