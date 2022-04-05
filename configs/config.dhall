@@ -1,10 +1,10 @@
 {
     psgSettings = {
-        getHost = "136.243.21.170",
+        getHost = "host",
         getPort = 5432,
-        getDatabase = "cexplorer",
-        getUser = "dex",
-        getPass = "m6m~p8^^nnE&@Pn"
+        getDatabase = "db",
+        getUser = "user",
+        getPass = "pass"
     },
     httpSettings = {
         getHost = "0.0.0.0",
