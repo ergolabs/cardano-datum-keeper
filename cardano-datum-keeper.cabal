@@ -22,6 +22,7 @@ common project-config
                         BangPatterns
                         BinaryLiterals
                         ConstraintKinds
+                        DerivingStrategies
                         DataKinds
                         DefaultSignatures
                         DeriveDataTypeable
@@ -105,6 +106,9 @@ library
     , binary
     , scientific
     , unliftio-core
+    , base16-bytestring == 1.0.1.0
+    , text == 1.2.4.1
+    , mtl == 2.2.2
   default-language: Haskell2010
 
 executable cardano-datum-keeper-exe

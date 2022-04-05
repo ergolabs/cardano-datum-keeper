@@ -9,29 +9,25 @@
 
 module Models.Api where
 
-import           Data.Aeson                            (ToJSON, FromJSON, toJSON, ToJSONKey)
-import           Plutus.V1.Ledger.Address              (Address (..))
-import qualified PlutusTx.AssocMap                     as Map
-import           Plutus.V1.Ledger.Value
-import           Plutus.V1.Ledger.Scripts              (ValidatorHash(..), DatumHash(..))
-import           Plutus.V1.Ledger.Crypto               (PubKeyHash(..))
-import           Plutus.V1.Ledger.Credential           (StakingCredential(..), Credential(..))
-import qualified PlutusTx.Builtins                     as Builtins
-import           Ledger.Scripts                        (Datum (..))
-import           Plutus.V1.Ledger.TxId                 (TxId(..))
+import           GHC.Generics            (Generic)
+import           Data.ByteString         (ByteString)
+import qualified Data.ByteString.Lazy    as B
+import qualified Data.ByteString.Base16  as Hex
+import qualified Data.Text.Encoding      as T
+import           Data.Aeson
+import           Ledger.Scripts (Datum (..))
 import           Data.Swagger
-import           Database.PostgreSQL.Simple.FromField  (FromField (..))
-import           Database.PostgreSQL.Simple.FromRow    (FromRow (..), field)
-import           GHC.Base                              (mzero)
-import           GHC.Generics
-import           Servant
-import           Servant.Swagger
-import qualified PlutusTx
+import Codec.Serialise (deserialise)
 
-instance ToSchema Datum
+newtype SerializedDatum = SerializedDatum { getDatumBytes :: ByteString }
+  deriving stock (Eq, Show, Generic)
 
-instance ToSchema PlutusTx.BuiltinData where
-    declareNamedSchema _ = return $ NamedSchema (Just "plutus.BuiltinData") byteSchema
+deserialiseDatum :: SerializedDatum -> Maybe Datum
+deserialiseDatum = deserialise . B.fromStrict . getDatumBytes
 
-instance ToSchema DatumHash where
-    declareNamedSchema _ = return $ NamedSchema (Just "DatumHash") byteSchema
+instance FromJSON SerializedDatum where
+  parseJSON (String s) = either fail (pure . SerializedDatum) (Hex.decode . T.encodeUtf8 $ s)
+  parseJSON _          = fail "Expected a string"
+
+instance ToSchema SerializedDatum where
+  declareNamedSchema _ = return $ NamedSchema (Just "SerializedDatum") byteSchema
