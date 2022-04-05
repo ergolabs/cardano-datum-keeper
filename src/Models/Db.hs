@@ -1,14 +1,13 @@
-{-# LANGUAGE TemplateHaskell            #-}
-
 module Models.Db where
 
-import           RIO
+import RIO
+
 import qualified Data.ByteString         as B
 import qualified Data.ByteString.Lazy    as BL
-import           Data.Aeson              as Json
+import qualified Data.Aeson              as Json
 import qualified Data.Text.Encoding      as T
 import qualified Data.ByteString.Base16  as Hex
-import           Data.ByteArray as BA
+import qualified Data.ByteArray          as BA
 
 import qualified Cardano.Api         as C
 import qualified Cardano.Api.Shelley as C
