@@ -2,14 +2,15 @@
 
 module Wirings.WiringApp where
 
+import Control.Monad.IO.Unlift
+
 import Database.PostgreSQL.Simple
 import Http.Server
-import Control.Monad.IO.Unlift
 import Repositories.DatumRepository
 import Services.DatumService
 import Settings.AppSettings
 
-mkConnection :: (MonadIO f) => PostgresSettings -> f Connection
+mkConnection :: MonadIO f => PostgresSettings -> f Connection
 mkConnection PostgresSettings {..} = do
   let connectInfo =
         ConnectInfo
@@ -21,10 +22,10 @@ mkConnection PostgresSettings {..} = do
           }
   liftIO $ connect connectInfo
 
-initApp :: (MonadIO f) => AppSettings -> UnliftIO f -> f ()
+initApp :: MonadIO f => AppSettings -> UnliftIO f -> f ()
 initApp AppSettings{..} ui = do
   connection <- mkConnection psgSettings
   let
-    datumRepo = mkDatumRepository connection
+    datumRepo    = mkDatumRepository connection
     datumService = mkDatumService datumRepo
   runHttpServer httpSettings datumService ui
