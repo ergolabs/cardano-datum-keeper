@@ -3,6 +3,6 @@ RUN apk update && apk upgrade \
     && apk add --no-cache bash \
     && apk update --no-cache curl; 
 WORKDIR /cabal-binary
-COPY cabal /cabal-binary/
+COPY cardano-datum-keeper-exe /cabal-binary/
 EXPOSE 8082
-CMD ["/cabal-binary/cabal", "run"]
+CMD ["/cabal-binary/cardano-datum-keeper-exe"]
