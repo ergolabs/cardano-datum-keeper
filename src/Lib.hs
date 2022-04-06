@@ -2,12 +2,13 @@ module Lib
   ( runApp
   ) where
       
-import Settings.AppSettings
-import Wirings.WiringApp
-import Control.Monad.IO.Unlift
+import RIO.List
 
-runApp :: IO ()
-runApp = do
-  let reader = mkSettingsReader
-  cfg <- getCfg reader 
-  initApp cfg (UnliftIO id)
+import Settings.AppSettings
+import Wirings.WiringApp ( initApp )
+import Control.Monad.IO.Unlift ( UnliftIO(UnliftIO) )
+
+runApp :: [String] -> IO ()
+runApp args = do
+  settings <- loadSetting $ headMaybe args
+  initApp settings (UnliftIO id)

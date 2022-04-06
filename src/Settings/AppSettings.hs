@@ -4,8 +4,10 @@
 
 module Settings.AppSettings where
 
+import Data.Maybe as Maybe
+import Data.Text  as T
+
 import Dhall
-import GHC.Generics
 import Data.Word                (Word16)
 import Control.Monad.IO.Class   (MonadIO, liftIO)
 
@@ -36,9 +38,6 @@ data HttpSettings = HttpSettings
 
 instance FromDhall HttpSettings
 
-data SettingsReader f = SettingsReader
-  { getCfg :: f AppSettings
-  }
-
-mkSettingsReader :: (MonadIO f) => SettingsReader f
-mkSettingsReader = SettingsReader $ liftIO $ input auto "./configs/config.dhall"
+loadSetting :: MonadIO f => Maybe String -> f AppSettings
+loadSetting maybePath = liftIO $ input auto path
+  where path = T.pack $ fromMaybe "./configs/config.dhall" maybePath

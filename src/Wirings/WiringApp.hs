@@ -14,10 +14,10 @@ mkConnection :: MonadIO f => PostgresSettings -> f Connection
 mkConnection PostgresSettings {..} = do
   let connectInfo =
         ConnectInfo
-          { connectHost = getHost,
-            connectPort = getPort,
+          { connectHost     = getHost,
+            connectPort     = getPort,
             connectDatabase = getDatabase,
-            connectUser = getUser,
+            connectUser     = getUser,
             connectPassword = getPass
           }
   liftIO $ connect connectInfo
