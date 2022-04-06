@@ -1,0 +1,8 @@
+FROM alpine:3.14
+RUN apk update && apk upgrade \
+    && apk add --no-cache bash \
+    && apk update --no-cache curl; 
+WORKDIR /cabal-binary
+COPY cabal /cabal-binary/
+EXPOSE 8082
+CMD ["/cabal-binary/cabal", "run"]
