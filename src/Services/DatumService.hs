@@ -5,16 +5,25 @@ module Services.DatumService
   , mkDatumService
   ) where
 
-import           Ledger.Scripts               (Datum (..), DatumHash (..))
-import           Repositories.DatumRepository
-import qualified Models.Db                    as DBDatum
+import RIO ((<&>))
+import Control.Monad.Except
+
+import           Repositories.DatumRepository ( DatumRepository(..) )
+import qualified Models.Db                    as DB
+import           Models.Api                   ( SerializedDatum, deserialiseDatum )
+
+import Servant.Server (ServerError(..), err400)
 
 data DatumService f = DatumService
-  { putDatum :: Datum -> f ()
+  { putDatum :: SerializedDatum -> ExceptT ServerError f ()
   }
 
-mkDatumService :: DatumRepository f -> DatumService f
+mkDatumService :: Monad f => DatumRepository f -> DatumService f
 mkDatumService repo = DatumService (putDatum' repo)
 
-putDatum' :: DatumRepository f -> Datum -> f ()
-putDatum' DatumRepository {..} = putDatum . DBDatum.fromDatum
+putDatum' :: Monad f => DatumRepository f -> SerializedDatum -> ExceptT ServerError f ()
+putDatum' DatumRepository {..} d =
+  maybe
+    (throwError err400 { errBody = "Cannot decode provided datum." }) 
+    (lift . putDatum)
+    (deserialiseDatum d <&> DB.datumToPersistence)
