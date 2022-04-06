@@ -2,7 +2,7 @@ FROM alpine:3.14
 RUN apk update && apk upgrade \
     && apk add --no-cache bash \
     && apk update --no-cache curl; 
-WORKDIR /cabal-binary
-COPY cardano-datum-keeper-exe /cabal-binary/
+WORKDIR /datum-keeper
+COPY cardano-datum-keeper-exe /datum-keeper/
 EXPOSE 8082
-CMD ["/cabal-binary/cardano-datum-keeper-exe"]
+CMD ["/datum-keeper/cardano-datum-keeper-exe"]
