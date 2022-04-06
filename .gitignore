@@ -24,4 +24,4 @@ cabal.project.local~
 result*
 .envrc
 .vim
-.temp-build/
+temp-build/
